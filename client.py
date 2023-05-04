@@ -2,8 +2,6 @@ import socket
 import threading
 import json
 import time
- 
-#group mesaj düzenle
 
 HOST = '127.0.0.1'
 PORT = 12345
@@ -86,8 +84,8 @@ def send_message_to_server(client):
             groups[group_name].remove(person)
             continue
         elif (message.startswith("/group_message")):
-            group_name = message.split(" ")[1]
-            content = message.split(" ")[2]
+            group_name = message.split(" ")[1].split("~")[0]
+            content = message.split("~")[1]
             group_temp = groups[group_name]
             for person in group_temp:
                 temp = {"command":"message", "message":person+"~"+content}
@@ -106,7 +104,6 @@ def send_message_to_server(client):
             client.send(json.dumps(temp).encode('utf-8'))
         else:
             print("Empty message")
-            exit(0)
 
 def communicate_to_server(client):
     global username 
